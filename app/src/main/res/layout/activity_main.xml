@@ -31,7 +31,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="全部都跳转到Hook"
+        android:text="设置全部都跳转到Hook"
         android:id="@+id/AllSetBtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

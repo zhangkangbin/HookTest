@@ -19,9 +19,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        //全局都跳转到  HookActivity。
-        MyApp.get().getMyProxyHandler().setCls(HookActivity.class);
-
         findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +36,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        findViewById(R.id.AllSetBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                //全局都跳转到  HookActivity。
+                MyApp.get().getMyProxyHandler().setCls(HookActivity.class);
+            }
+        });
 
 
     }
