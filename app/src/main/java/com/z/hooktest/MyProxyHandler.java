@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
  * Date: 2019/3/17 0017
  * Time: 下午 3:43
  * 动态代理
+ *
  * @author zhangkb
  */
 public class MyProxyHandler implements InvocationHandler {
@@ -21,15 +22,18 @@ public class MyProxyHandler implements InvocationHandler {
     private Context context;
     private Class<?> cls;
 
-    public MyProxyHandler(Object objectProxy, Context context, Class<?> cls) {
+    public MyProxyHandler(Object objectProxy, Context context) {
         this.objectProxy = objectProxy;
         this.context = context;
+
+    }
+    public void setCls(Class<?> cls) {
         this.cls = cls;
     }
 
     /**
      * 动态代理
-     *
+     * @hide
      * @param proxy
      * @param method
      * @param args
@@ -40,7 +44,7 @@ public class MyProxyHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
 
-        if ("startActivity".equals(method.getName())) {
+        if ("startActivity".equals(method.getName())&&cls!=null) {
             Log.d("mytest", "-------start-----------------做点什么？");
             // 取出在真实的Intent
             Intent intent = null;

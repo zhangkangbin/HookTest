@@ -16,17 +16,17 @@ import java.lang.reflect.Proxy;
 public class MyApp extends Application {
 
     private static MyApp myApp;
-    private  Object mIActivityManagerMy;
-    private Field singletonIActivityManagerInstanceField;
-    /**
-     * 单列对象
-     */
-    private Object singletonIActivityManagerObject;
+
     public static MyApp get() {
         return myApp;
     }
 
+    public MyProxyHandler getMyProxyHandler() {
+        return myProxyHandler;
+    }
 
+
+    private MyProxyHandler myProxyHandler;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,21 +42,30 @@ public class MyApp extends Application {
             declaredField.setAccessible(true);
 
             // IActivityManager
-            mIActivityManagerMy = declaredField.get(null);
+            Object mIActivityManagerMy = declaredField.get(null);
 
             Log.d("mytest", "mIActivityManagerMy==" + mIActivityManagerMy.getClass().getName());
 
             // 第二获取单列对象
             Class<?> singletonClass = Class.forName("android.util.Singleton");
 
-            singletonIActivityManagerInstanceField = singletonClass.getDeclaredField("mInstance");
+            Field singletonIActivityManagerInstanceField = singletonClass.getDeclaredField("mInstance");
             singletonIActivityManagerInstanceField.setAccessible(true);
             // 获取单列对象
-            singletonIActivityManagerObject = singletonIActivityManagerInstanceField.get(mIActivityManagerMy);
+            /**
+             * 单列对象
+             */
+            Object singletonIActivityManagerObject = singletonIActivityManagerInstanceField.get(mIActivityManagerMy);
 
             Log.d("mytest", "singletonIActivityManagerObject==" + singletonIActivityManagerObject.getClass().getName());
 
+            // 使用动态代理的方式
 
+            myProxyHandler = new MyProxyHandler(singletonIActivityManagerObject, getApplicationContext());
+            Object proxy = Proxy.newProxyInstance(getClassLoader(), singletonIActivityManagerObject.getClass().getInterfaces(), myProxyHandler);
+
+            // 第三步： 替换成代理对象
+            singletonIActivityManagerInstanceField.set(mIActivityManagerMy, proxy);
             /**
              *  int result = ActivityManager.getService()
              *                 .startActivity(whoThread, who.getBasePackageName(), intent,
@@ -72,19 +81,9 @@ public class MyApp extends Application {
 
     public void start(Context context, Class<?> cls) {
 
-
         try {
-            // 使用动态代理的方式
-
-            MyProxyHandler myProxyHandler = new MyProxyHandler(singletonIActivityManagerObject, getApplicationContext(), cls);
-            Object proxy = Proxy.newProxyInstance(context.getClass().getClassLoader(), singletonIActivityManagerObject.getClass().getInterfaces(), myProxyHandler);
-
-            // 第三步： 替换成代理对象
-            singletonIActivityManagerInstanceField.set(mIActivityManagerMy, proxy);
-
             Intent intent = new Intent(context, cls);
             context.startActivity(intent);
-
         } catch (Exception e) {
             Log.d("mytest", e.getLocalizedMessage());
         }

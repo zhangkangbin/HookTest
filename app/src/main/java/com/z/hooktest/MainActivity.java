@@ -18,10 +18,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //全局都跳转到  HookActivity。
+        MyApp.get().getMyProxyHandler().setCls(HookActivity.class);
+
         findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startActivity(new Intent(MainActivity.this, TestActivity.class));
             }
         });
@@ -30,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.hookBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyApp.get().start(MainActivity.this,UnRegisterActivity.class);
+
+                startActivity(new Intent(MainActivity.this, UnRegisterActivity.class));
             }
         });
 
