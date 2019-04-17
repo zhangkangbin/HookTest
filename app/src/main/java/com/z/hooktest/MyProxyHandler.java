@@ -59,11 +59,11 @@ public class MyProxyHandler implements InvocationHandler {
             if (intent != null) {
                 intent.setClassName(context.getPackageName(), cls.getName());
             }
-
+             Log.d("mytest", "-------end----------做点什么？");
         }
 
         Object result = method.invoke(objectProxy, args);
-        Log.d("mytest", "--------------end----------做点什么？");
+
         return result;
     }
 }
