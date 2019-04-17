@@ -16,19 +16,15 @@ import java.lang.reflect.Proxy;
 public class MyApp extends Application {
 
     private static MyApp myApp;
-
-    public static MyApp get() {
-        return myApp;
-    }
-
-    Object mIActivityManagerMy;
-
-    Field singletonIActivityManagerInstanceField;
-
+    private  Object mIActivityManagerMy;
+    private Field singletonIActivityManagerInstanceField;
     /**
      * 单列对象
      */
-    Object singletonIActivityManagerObject;
+    private Object singletonIActivityManagerObject;
+    public static MyApp get() {
+        return myApp;
+    }
 
 
     @Override
