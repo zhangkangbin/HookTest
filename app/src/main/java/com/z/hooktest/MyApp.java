@@ -15,17 +15,14 @@ import java.lang.reflect.Proxy;
 public class MyApp extends Application {
 
     private static MyApp myApp;
-
+    private MyProxyHandler myProxyHandler;
     public static MyApp get() {
         return myApp;
     }
-
     public MyProxyHandler getMyProxyHandler() {
         return myProxyHandler;
     }
 
-
-    private MyProxyHandler myProxyHandler;
     @Override
     public void onCreate() {
         super.onCreate();
